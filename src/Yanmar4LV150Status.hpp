@@ -320,6 +320,12 @@ namespace motors_yanmar_4lv150 {
         void update(j1939::pgns::EngineHoursAndRevolutions const& pgn);
         void update(j1939::pgns::VehicleElectricalPower const& pgn);
         void update(j1939::pgns::EngineTemperature1 const& pgn);
+
+        /**
+         * @brief Updates the status using a raw PGNMessage.
+         * @return true if the PGN was recognized and handled, false otherwise.
+         */
+        bool update(can_common::PGNMessage const& msg);
     };
 }
 

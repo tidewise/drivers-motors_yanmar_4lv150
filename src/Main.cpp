@@ -31,45 +31,7 @@ int main(int argc, char const* argv[])
     while (true) {
         try {
             auto msg = can_interface.readMessage();
-            bool updated = true;
-
-            switch (msg.pgn) {
-                case j1939::pgns::ElectronicEngineController1::ID:
-                    status.update(
-                        j1939::pgns::ElectronicEngineController1::fromMessage(msg));
-                    break;
-                case j1939::pgns::ElectronicEngineController2::ID:
-                    status.update(
-                        j1939::pgns::ElectronicEngineController2::fromMessage(msg));
-                    break;
-                case j1939::pgns::FuelEconomy::ID:
-                    status.update(j1939::pgns::FuelEconomy::fromMessage(msg));
-                    break;
-                case j1939::pgns::EngineFluidLevelAndPressure1::ID:
-                    status.update(
-                        j1939::pgns::EngineFluidLevelAndPressure1::fromMessage(msg));
-                    break;
-                case j1939::pgns::EngineFluidLevelAndPressure2::ID:
-                    status.update(
-                        j1939::pgns::EngineFluidLevelAndPressure2::fromMessage(msg));
-                    break;
-                case j1939::pgns::InletConditions::ID:
-                    status.update(j1939::pgns::InletConditions::fromMessage(msg));
-                    break;
-                case j1939::pgns::EngineHoursAndRevolutions::ID:
-                    status.update(
-                        j1939::pgns::EngineHoursAndRevolutions::fromMessage(msg));
-                    break;
-                case j1939::pgns::VehicleElectricalPower::ID:
-                    status.update(j1939::pgns::VehicleElectricalPower::fromMessage(msg));
-                    break;
-                case j1939::pgns::EngineTemperature1::ID:
-                    status.update(j1939::pgns::EngineTemperature1::fromMessage(msg));
-                    break;
-                default:
-                    updated = false;
-                    break;
-            }
+            bool updated = status.update(msg);
 
             if (updated) {
                 cout << "--- Yanmar 4LV150 Status ---\n";

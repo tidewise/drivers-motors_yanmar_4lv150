@@ -133,3 +133,38 @@ void Yanmar4LV150Status::update(pgns::EngineTemperature1 const& pgn)
     engine_intercooler_thermostat_opening =
         (pgn.engine_intercooler_thermostat_opening * 0.4) * PERCENTAGE_SCALE;
 }
+
+bool Yanmar4LV150Status::update(can_common::PGNMessage const& msg)
+{
+    switch (msg.pgn) {
+        case pgns::ElectronicEngineController1::ID:
+            update(pgns::ElectronicEngineController1::fromMessage(msg));
+            return true;
+        case pgns::ElectronicEngineController2::ID:
+            update(pgns::ElectronicEngineController2::fromMessage(msg));
+            return true;
+        case pgns::FuelEconomy::ID:
+            update(pgns::FuelEconomy::fromMessage(msg));
+            return true;
+        case pgns::EngineFluidLevelAndPressure1::ID:
+            update(pgns::EngineFluidLevelAndPressure1::fromMessage(msg));
+            return true;
+        case pgns::EngineFluidLevelAndPressure2::ID:
+            update(pgns::EngineFluidLevelAndPressure2::fromMessage(msg));
+            return true;
+        case pgns::InletConditions::ID:
+            update(pgns::InletConditions::fromMessage(msg));
+            return true;
+        case pgns::EngineHoursAndRevolutions::ID:
+            update(pgns::EngineHoursAndRevolutions::fromMessage(msg));
+            return true;
+        case pgns::VehicleElectricalPower::ID:
+            update(pgns::VehicleElectricalPower::fromMessage(msg));
+            return true;
+        case pgns::EngineTemperature1::ID:
+            update(pgns::EngineTemperature1::fromMessage(msg));
+            return true;
+        default:
+            return false;
+    }
+}
