@@ -14,25 +14,25 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_eec1)
     Yanmar4LV150Status status;
     pgns::ElectronicEngineController1 pgn;
     pgn.time = base::Time::fromMilliseconds(1234);
-    pgn.engine_torque_mode = pgns::EngineTorqueMode::ACCELERATOR_PEDAL;
+    pgn.engine_torque_mode = pgns::ACCELERATOR_PEDAL;
     pgn.drivers_demand_engine = 125 + 50;
     pgn.actual_engine = 125 + 25;
     pgn.engine_speed = 8000;
     pgn.source_address = 15;
-    pgn.engine_starter_mode = pgns::EngineStarterMode::START_FINISHED;
+    pgn.engine_starter_mode = pgns::START_FINISHED;
     pgn.engine_demand = 125 + 10;
 
     status.update(pgn);
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::ElectronicEngineController1::ID);
-    ASSERT_EQ(status.engine_torque_mode, pgns::EngineTorqueMode::ACCELERATOR_PEDAL);
+    ASSERT_EQ(status.engine_torque_mode, pgns::ACCELERATOR_PEDAL);
     ASSERT_NEAR(status.drivers_demand_engine_torque, 0.50, 1e-5);
     ASSERT_NEAR(status.actual_engine_torque, 0.25, 1e-5);
     ASSERT_TRUE(status.engine_speed.isSpeed());
     ASSERT_NEAR(status.engine_speed.speed, 104.7197551197, 1e-5);
     ASSERT_EQ(status.source_address, 15);
-    ASSERT_EQ(status.engine_starter_mode, pgns::EngineStarterMode::START_FINISHED);
+    ASSERT_EQ(status.engine_starter_mode, pgns::START_FINISHED);
     ASSERT_NEAR(status.engine_demand_torque, 0.10, 1e-5);
 }
 
