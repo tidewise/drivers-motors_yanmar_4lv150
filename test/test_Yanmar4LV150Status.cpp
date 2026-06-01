@@ -26,6 +26,8 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_eec1)
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::ElectronicEngineController1::ID);
+    ASSERT_EQ(status.received_messages, PGN_61444);
+    ASSERT_FALSE(status.isFull());
     ASSERT_EQ(status.engine_torque_mode, pgns::ACCELERATOR_PEDAL);
     ASSERT_NEAR(status.drivers_demand_engine_torque, 0.50, 1e-5);
     ASSERT_NEAR(status.actual_engine_torque, 0.25, 1e-5);
@@ -51,6 +53,8 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_eec2)
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::ElectronicEngineController2::ID);
+    ASSERT_EQ(status.received_messages, PGN_61445);
+    ASSERT_FALSE(status.isFull());
     ASSERT_EQ(status.selected_gear, 2);
     ASSERT_NEAR(status.actual_gear_ratio, 5.382, 1e-5);
     ASSERT_EQ(status.current_gear, 3);
@@ -72,6 +76,8 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_fuel_economy)
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::FuelEconomy::ID);
+    ASSERT_EQ(status.received_messages, PGN_65266);
+    ASSERT_FALSE(status.isFull());
     ASSERT_NEAR(status.fuel_rate, 1.38888889e-5, 1e-9);
     ASSERT_NEAR(status.instantaneous_fuel_economy, 8000.0, 1e-5);
     ASSERT_NEAR(status.average_fuel_economy, 16000.0, 1e-5);
@@ -95,6 +101,8 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_fluid_level_and_pressure_1)
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::EngineFluidLevelAndPressure1::ID);
+    ASSERT_EQ(status.received_messages, PGN_65263);
+    ASSERT_FALSE(status.isFull());
     ASSERT_NEAR(status.fuel_delivery_pressure.toPa(), 600000.0, 1e-5);
     ASSERT_NEAR(status.extended_crankcase_blow_by_pressure.toPa(), 1000.0, 1e-5);
     ASSERT_NEAR(status.engine_oil_level, 0.512, 1e-5);
@@ -118,6 +126,8 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_fluid_level_and_pressure_2)
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::EngineFluidLevelAndPressure2::ID);
+    ASSERT_EQ(status.received_messages, PGN_65243);
+    ASSERT_FALSE(status.isFull());
     ASSERT_NEAR(status.injection_control_pressure.toPa(), 390625.0, 1e-5);
     ASSERT_NEAR(status.injector_metering_rail_1_pressure.toPa(), 781250.0, 1e-5);
     ASSERT_NEAR(status.injector_timing_rail_1_pressure.toPa(), 1171875.0, 1e-5);
@@ -141,6 +151,8 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_inlet_conditions)
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::InletConditions::ID);
+    ASSERT_EQ(status.received_messages, PGN_65270);
+    ASSERT_FALSE(status.isFull());
     ASSERT_NEAR(status.particulate_trap_inlet_pressure.toPa(), 5000.0, 1e-5);
     ASSERT_NEAR(status.boost_pressure.toPa(), 40000.0, 1e-5);
     ASSERT_NEAR(status.intake_manifold_1_temperature.getCelsius(), 20.0, 1e-5);
@@ -162,6 +174,8 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_engine_hours_and_revolutions)
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::EngineHoursAndRevolutions::ID);
+    ASSERT_EQ(status.received_messages, PGN_65253);
+    ASSERT_FALSE(status.isFull());
     ASSERT_NEAR(status.total_engine_hours.toSeconds(), 1800000.0, 1e-5);
     ASSERT_NEAR(status.total_engine_revolutions, 20000000.0, 1e-5);
 }
@@ -181,6 +195,8 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_vehicle_electrical_power)
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::VehicleElectricalPower::ID);
+    ASSERT_EQ(status.received_messages, PGN_65271);
+    ASSERT_FALSE(status.isFull());
     ASSERT_NEAR(status.net_battery_current, 10.0, 1e-5);
     ASSERT_NEAR(status.alternator_current, 10.0, 1e-5);
     ASSERT_NEAR(status.alternator_potential, 10.0, 1e-5);
@@ -204,10 +220,39 @@ TEST_F(Yanmar4LV150StatusTest, it_updates_from_engine_temperature_1)
 
     ASSERT_EQ(status.time, pgn.time);
     ASSERT_EQ(status.last_received_pgn, pgns::EngineTemperature1::ID);
+    ASSERT_EQ(status.received_messages, PGN_65262);
+    ASSERT_FALSE(status.isFull());
     ASSERT_NEAR(status.engine_coolant_temperature.getCelsius(), 60.0, 1e-5);
     ASSERT_NEAR(status.fuel_temperature.getCelsius(), 80.0, 1e-5);
     ASSERT_NEAR(status.engine_oil_temperature.getCelsius(), 39.5, 1e-5);
     ASSERT_NEAR(status.turbo_oil_temperature.getCelsius(), 70.75, 1e-5);
     ASSERT_NEAR(status.engine_intercooler_temperature.getCelsius(), 40.0, 1e-5);
     ASSERT_NEAR(status.engine_intercooler_thermostat_opening, 0.4, 1e-5);
+}
+
+TEST_F(Yanmar4LV150StatusTest, it_reports_is_full)
+{
+    Yanmar4LV150Status status;
+    ASSERT_FALSE(status.isFull());
+
+    status.update(pgns::ElectronicEngineController1());
+    ASSERT_FALSE(status.isFull());
+    status.update(pgns::ElectronicEngineController2());
+    ASSERT_FALSE(status.isFull());
+    status.update(pgns::FuelEconomy());
+    ASSERT_FALSE(status.isFull());
+    status.update(pgns::EngineFluidLevelAndPressure1());
+    ASSERT_FALSE(status.isFull());
+    status.update(pgns::EngineFluidLevelAndPressure2());
+    ASSERT_FALSE(status.isFull());
+    status.update(pgns::InletConditions());
+    ASSERT_FALSE(status.isFull());
+    status.update(pgns::EngineHoursAndRevolutions());
+    ASSERT_FALSE(status.isFull());
+    status.update(pgns::VehicleElectricalPower());
+    ASSERT_FALSE(status.isFull());
+    status.update(pgns::EngineTemperature1());
+
+    ASSERT_TRUE(status.isFull());
+    ASSERT_EQ(status.received_messages, ALL_RECEIVED);
 }

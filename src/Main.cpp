@@ -37,6 +37,7 @@ int main(int argc, char const* argv[])
                 cout << "--- Yanmar 4LV150 Status ---\n";
                 cout << "time: " << status.time << "\n";
                 cout << "last_received_pgn: " << status.last_received_pgn << "\n";
+                cout << "is_full: " << status.isFull() << "\n";
                 cout << "engine_torque_mode: "
                      << static_cast<int>(status.engine_torque_mode) << "\n";
                 cout << "drivers_demand_engine_torque: "

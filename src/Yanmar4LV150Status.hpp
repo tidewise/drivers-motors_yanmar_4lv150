@@ -19,7 +19,8 @@ namespace motors_yanmar_4lv150 {
         PGN_65270 = 1 << 5,
         PGN_65253 = 1 << 6,
         PGN_65271 = 1 << 7,
-        PGN_65262 = 1 << 8
+        PGN_65262 = 1 << 8,
+        ALL_RECEIVED = (1 << 9) - 1
     };
     /**
      * @brief Full status of the Yanmar 4LV150 engine feedback
@@ -39,6 +40,13 @@ namespace motors_yanmar_4lv150 {
 
         /** @brief Bitmask of all received messages */
         uint16_t received_messages = 0;
+
+        /**
+         * @brief Checks if all expected PGNs have been received at least once
+         */
+        bool isFull() const {
+            return received_messages == ALL_RECEIVED;
+        }
 
         /**
          * @brief State of engine torque control system.
