@@ -10,6 +10,17 @@
 #include <j1939/PGNs.hpp>
 
 namespace motors_yanmar_4lv150 {
+    enum ReceivedMessage : uint16_t {
+        PGN_61444 = 1 << 0,
+        PGN_61445 = 1 << 1,
+        PGN_65266 = 1 << 2,
+        PGN_65263 = 1 << 3,
+        PGN_65243 = 1 << 4,
+        PGN_65270 = 1 << 5,
+        PGN_65253 = 1 << 6,
+        PGN_65271 = 1 << 7,
+        PGN_65262 = 1 << 8
+    };
     /**
      * @brief Full status of the Yanmar 4LV150 engine feedback
      */
@@ -24,13 +35,16 @@ namespace motors_yanmar_4lv150 {
         base::Time time;
 
         /** @brief ID of the most recently received PGN */
-        int last_received_pgn;
+        int last_received_pgn = 0;
+
+        /** @brief Bitmask of all received messages */
+        uint16_t received_messages = 0;
 
         /**
          * @brief State of engine torque control system.
          * @note PGN: 61444 | SPN: 899
          */
-        j1939::pgns::EngineTorqueMode engine_torque_mode;
+        j1939::pgns::EngineTorqueMode engine_torque_mode = j1939::pgns::ENGINE_TORQUE_MODE_NOT_AVAILABLE;
 
         /**
          * @brief Driver's requested torque.
@@ -60,7 +74,7 @@ namespace motors_yanmar_4lv150 {
          * @brief Status of engine starter.
          * @note PGN: 61444 | SPN: 1675
          */
-        j1939::pgns::EngineStarterMode engine_starter_mode;
+        j1939::pgns::EngineStarterMode engine_starter_mode = j1939::pgns::ENGINE_STARTER_MODE_NOT_AVAILABLE;
 
         /**
          * @brief Engine torque demand.

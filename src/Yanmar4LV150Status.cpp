@@ -8,6 +8,7 @@ void Yanmar4LV150Status::update(pgns::ElectronicEngineController1 const& pgn)
 {
     time = pgn.time;
     last_received_pgn = pgns::ElectronicEngineController1::ID;
+    received_messages |= PGN_61444;
 
     engine_torque_mode = pgn.engine_torque_mode;
     drivers_demand_engine_torque = (pgn.drivers_demand_engine - 125) * PERCENTAGE_SCALE;
@@ -22,6 +23,7 @@ void Yanmar4LV150Status::update(pgns::ElectronicEngineController2 const& pgn)
 {
     time = pgn.time;
     last_received_pgn = pgns::ElectronicEngineController2::ID;
+    received_messages |= PGN_61445;
 
     selected_gear = pgn.selected_gear - 125;
     actual_gear_ratio = pgn.actual_gear_ratio * 0.001;
@@ -34,6 +36,7 @@ void Yanmar4LV150Status::update(pgns::FuelEconomy const& pgn)
 {
     time = pgn.time;
     last_received_pgn = pgns::FuelEconomy::ID;
+    received_messages |= PGN_65266;
 
     fuel_rate = (pgn.fuel_rate * 0.05) * LITERS_PER_HOUR_TO_SI;
     instantaneous_fuel_economy = pgn.instantaneous_fuel_economy * FUEL_ECONOMY_SCALE;
@@ -45,6 +48,7 @@ void Yanmar4LV150Status::update(pgns::EngineFluidLevelAndPressure1 const& pgn)
 {
     time = pgn.time;
     last_received_pgn = pgns::EngineFluidLevelAndPressure1::ID;
+    received_messages |= PGN_65263;
 
     fuel_delivery_pressure =
         base::Pressure::fromPascal((pgn.fuel_delivery_pressure * 4) * 1000.0);
@@ -63,6 +67,7 @@ void Yanmar4LV150Status::update(pgns::EngineFluidLevelAndPressure2 const& pgn)
 {
     time = pgn.time;
     last_received_pgn = pgns::EngineFluidLevelAndPressure2::ID;
+    received_messages |= PGN_65243;
 
     injection_control_pressure = base::Pressure::fromPascal(
         pgn.injection_control_pressure * INJECTOR_PRESSURE_SCALE);
@@ -78,6 +83,7 @@ void Yanmar4LV150Status::update(pgns::InletConditions const& pgn)
 {
     time = pgn.time;
     last_received_pgn = pgns::InletConditions::ID;
+    received_messages |= PGN_65270;
 
     particulate_trap_inlet_pressure =
         base::Pressure::fromPascal((pgn.particulate_trap_inlet_pressure * 0.5) * 1000.0);
@@ -98,6 +104,7 @@ void Yanmar4LV150Status::update(pgns::EngineHoursAndRevolutions const& pgn)
 {
     time = pgn.time;
     last_received_pgn = pgns::EngineHoursAndRevolutions::ID;
+    received_messages |= PGN_65253;
 
     total_engine_hours =
         base::Time::fromSeconds((pgn.total_engine_hours * 0.05) * 3600.0);
@@ -108,6 +115,7 @@ void Yanmar4LV150Status::update(pgns::VehicleElectricalPower const& pgn)
 {
     time = pgn.time;
     last_received_pgn = pgns::VehicleElectricalPower::ID;
+    received_messages |= PGN_65271;
 
     net_battery_current = pgn.net_battery_current - 125;
     alternator_current = pgn.alternator_current;
@@ -120,6 +128,7 @@ void Yanmar4LV150Status::update(pgns::EngineTemperature1 const& pgn)
 {
     time = pgn.time;
     last_received_pgn = pgns::EngineTemperature1::ID;
+    received_messages |= PGN_65262;
 
     engine_coolant_temperature =
         base::Temperature::fromCelsius(pgn.engine_coolant_temperature - 40);
