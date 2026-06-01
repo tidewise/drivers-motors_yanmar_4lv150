@@ -35,7 +35,7 @@ void Yanmar4LV150Status::update(pgns::FuelEconomy const& pgn)
     time = pgn.time;
     last_received_pgn = pgns::FuelEconomy::ID;
 
-    fuel_rate = (pgn.fuel_rate * 0.05) * LH_TO_M3S;
+    fuel_rate = (pgn.fuel_rate * 0.05) * LITERS_PER_HOUR_TO_SI;
     instantaneous_fuel_economy = pgn.instantaneous_fuel_economy * FUEL_ECONOMY_SCALE;
     average_fuel_economy = pgn.average_fuel_economy * FUEL_ECONOMY_SCALE;
     throttle_position = (pgn.throttle_position * 0.4) * PERCENTAGE_SCALE;

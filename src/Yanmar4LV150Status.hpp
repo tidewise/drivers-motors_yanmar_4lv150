@@ -16,7 +16,7 @@ namespace motors_yanmar_4lv150 {
     struct Yanmar4LV150Status {
         static constexpr double PERCENTAGE_SCALE = 1.0 / 100.0;
         static constexpr double RPM_TO_RADS = 2.0 * M_PI / 60.0;
-        static constexpr double LH_TO_M3S = 1.0 / 3600000.0;
+        static constexpr double LITERS_PER_HOUR_TO_SI = 1.0 / 3600000.0;
         static constexpr double FUEL_ECONOMY_SCALE = 1000.0 / 512.0;
         static constexpr double INJECTOR_PRESSURE_SCALE = 1000000.0 / 256.0;
 
